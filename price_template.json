@@ -1,0 +1,21 @@
+{
+  "_comment": "Price query template for YiDiDa API. Use {{variable}} for config substitution.",
+  "_parameters_explanation": {
+    "priceZoneType": "Zone type: 1=postal code, 2=port, 3=city, 4=region, 5=amazon warehouse, 6=state",
+    "searchType": "Query type: 2=customer pricing, 3=public pricing",
+    "wayTypeList": "Logistics types: 0=express export, 1=small parcel, 2=dedicated line, 4=air freight, 5=sea freight, 7=land transport, 100=express import",
+    "packageType": "Package type: 0=document, 1=parcel, 2=parcel bag"
+  },
+  "priceZoneType": 1,
+  "searchType": 2,
+  "wayTypeList": [0],
+  "weight": "{{defaults.weight}}",
+  "packageType": 1,
+  "pieceCount": 1,
+  "toCustomer": {
+    "countryCode": "{{defaults.countryCode}}",
+    "postcode": "{{defaults.postcode}}",
+    "city": "{{defaults.city}}",
+    "stateCode": "{{defaults.stateCode}}"
+  }
+}

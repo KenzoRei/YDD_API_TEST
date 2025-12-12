@@ -3,7 +3,16 @@ YiDiDa API Client for creating shipping labels (UPS/FedEx)
 """
 import requests
 import json
+import logging
 from typing import Dict, List, Optional
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='[%(levelname)s] %(asctime)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
+logger = logging.getLogger(__name__)
 
 
 class YiDiDaClient:
@@ -57,21 +66,22 @@ class YiDiDaClient:
                     if self.token:
                         # Set token in session headers (without "Bearer" prefix based on API behavior)
                         self.session.headers.update({"Authorization": self.token})
-                        print(f"✓ Login successful! Token obtained.")
+                        logger.info("✓ Login successful! Token obtained.")
+                        logger.debug(f"Token: {self.token[:20]}...")
                         return True
                     else:
-                        print(f"✗ Login response missing token: {result}")
+                        logger.error(f"✗ Login response missing token: {result}")
                         return False
                 else:
-                    print(f"✗ Login failed: {result.get('data', 'Unknown error')}")
+                    logger.error(f"✗ Login failed: {result.get('data', 'Unknown error')}")
                     return False
             else:
-                print(f"✗ Login failed with status code {response.status_code}")
-                print(f"Response: {response.text}")
+                logger.error(f"✗ Login failed with status code {response.status_code}")
+                logger.debug(f"Response: {response.text}")
                 return False
                 
         except requests.exceptions.RequestException as e:
-            print(f"✗ Login request failed: {e}")
+            logger.error(f"✗ Login request failed: {e}")
             return False
     
     def create_labels(self, label_requests: List[Dict]) -> Optional[Dict]:
@@ -85,10 +95,11 @@ class YiDiDaClient:
             API response dictionary if successful, None otherwise
         """
         if not self.token:
-            print("✗ Not logged in. Please call login() first.")
+            logger.error("✗ Not logged in. Please call login() first.")
             return None
         
         create_url = f"{self.base_url}/yundans/"
+        logger.debug(f"Creating labels at: {create_url}")
         
         try:
             response = self.session.post(
@@ -99,19 +110,20 @@ class YiDiDaClient:
             response.raise_for_status()
             
             result = response.json()
+            logger.debug(f"API Response: {json.dumps(result, indent=2, ensure_ascii=False)}")
             
             if result.get("success") or result.get("code") == 200:
-                print(f"✓ Labels created successfully!")
+                logger.info(f"✓ Labels created successfully!")
                 return result
             else:
-                print(f"✗ Label creation failed: {result.get('message', 'Unknown error')}")
-                print(f"Response: {json.dumps(result, indent=2)}")
+                logger.error(f"✗ Label creation failed: {result.get('message', 'Unknown error')}")
+                logger.debug(f"Response: {json.dumps(result, indent=2)}")
                 return result
                 
         except requests.exceptions.RequestException as e:
-            print(f"✗ Label creation request failed: {e}")
+            logger.error(f"✗ Label creation request failed: {e}")
             if hasattr(e.response, 'text'):
-                print(f"Response body: {e.response.text}")
+                logger.debug(f"Response body: {e.response.text}")
             return None
     
     @staticmethod
@@ -195,4 +207,130 @@ class YiDiDaClient:
         """
         with open(template_path, 'w', encoding='utf-8') as f:
             json.dump(label_requests, f, indent=2, ensure_ascii=False)
-        print(f"✓ Template saved to {template_path}")
+        logger.info(f"✓ Template saved to {template_path}")
+    
+    def query_price(self, price_params: Dict) -> Optional[Dict]:
+        """
+        Query shipping rates/prices using YiDiDa API
+        
+        Args:
+            price_params: Price query parameters dictionary containing:
+                - priceZoneType (int, required): Zone type (1=postal, 2=port, 3=city, 4=region, 5=amazon, 6=state)
+                - searchType (int, required): Query type (2=customer pricing, 3=public pricing)
+                - wayTypeList (list[int], required): Logistics types (0=express, 1=small parcel, 2=dedicated, etc.)
+                - weight (float, required): Weight in kg
+                - toCustomer (dict, optional): Recipient info with countryCode, postcode, city, stateCode
+                - Other optional parameters as per API documentation
+            
+        Returns:
+            API response dictionary if successful, None otherwise
+        """
+        if not self.token:
+            logger.error("✗ Not logged in. Please call login() first.")
+            return None
+        
+        price_url = f"{self.base_url}/price"
+        logger.debug(f"Querying prices at: {price_url}")
+        logger.debug(f"Query parameters: {json.dumps(price_params, indent=2, ensure_ascii=False)}")
+        
+        try:
+            response = self.session.post(
+                price_url,
+                json=price_params,
+                headers={"Content-Type": "application/json"},
+                timeout=30
+            )
+            response.raise_for_status()
+            
+            result = response.json()
+            logger.debug(f"API Response: {json.dumps(result, indent=2, ensure_ascii=False)}")
+            
+            if result.get("success") or result.get("statusCode") == 200:
+                logger.info(f"✓ Price query successful!")
+                return result
+            else:
+                logger.error(f"✗ Price query failed: {result.get('message', 'Unknown error')}")
+                logger.debug(f"Response: {json.dumps(result, indent=2)}")
+                return result
+                
+        except requests.exceptions.RequestException as e:
+            logger.error(f"✗ Price query request failed: {e}")
+            if hasattr(e, 'response') and hasattr(e.response, 'text'):
+                logger.debug(f"Response body: {e.response.text}")
+            return None
+    
+    def query_shipment(self, order_numbers: str) -> Optional[Dict]:
+        """
+        Query shipment details/tracking using YiDiDa API
+        
+        Args:
+            order_numbers: Customer order numbers, comma-separated (max 10)
+                          Example: "ORDER001,ORDER002,ORDER003"
+            
+        Returns:
+            API response dictionary if successful, None otherwise
+        """
+        if not self.token:
+            logger.error("✗ Not logged in. Please call login() first.")
+            return None
+        
+        # Validate order numbers
+        order_list = [num.strip() for num in order_numbers.split(',') if num.strip()]
+        if not order_list:
+            logger.error("✗ No order numbers provided.")
+            return None
+        
+        if len(order_list) > 10:
+            logger.warning(f"⚠ Maximum 10 order numbers allowed. Only querying first 10.")
+            order_list = order_list[:10]
+            order_numbers = ','.join(order_list)
+        
+        query_url = f"{self.base_url}/queryYunDanDetail"
+        logger.debug(f"Querying shipment at: {query_url}")
+        logger.info(f"Querying {len(order_list)} order(s): {order_numbers}")
+        
+        try:
+            response = self.session.get(
+                query_url,
+                params={"danHaos": order_numbers},
+                timeout=30
+            )
+            response.raise_for_status()
+            
+            result = response.json()
+            logger.debug(f"API Response: {json.dumps(result, indent=2, ensure_ascii=False)}")
+            
+            if result.get("success") or result.get("statusCode") == 200:
+                logger.info(f"✓ Shipment query successful!")
+                return result
+            else:
+                logger.error(f"✗ Shipment query failed: {result.get('message', 'Unknown error')}")
+                logger.debug(f"Response: {json.dumps(result, indent=2)}")
+                return result
+                
+        except requests.exceptions.RequestException as e:
+            logger.error(f"✗ Shipment query request failed: {e}")
+            if hasattr(e, 'response') and hasattr(e.response, 'text'):
+                logger.debug(f"Response body: {e.response.text}")
+            return None
+    
+    @staticmethod
+    def load_price_template(template_path: str = "price_template.json", config: Optional[Dict] = None) -> Dict:
+        """
+        Load price query template from JSON file and optionally substitute config values
+        
+        Args:
+            template_path: Path to template file
+            config: Optional config dictionary to substitute variables (use {{defaults.key}} in template)
+            
+        Returns:
+            Price query parameters dictionary
+        """
+        with open(template_path, 'r', encoding='utf-8') as f:
+            template_str = f.read()
+        
+        # If config is provided, substitute variables like {{defaults.key}}
+        if config:
+            template_str = YiDiDaClient._substitute_variables(template_str, config)
+        
+        return json.loads(template_str)

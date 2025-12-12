@@ -1,0 +1,143 @@
+I need to create a project to create ups/fedex label by YiDiDa(an integrate platform to create label).
+The process are:
+1. login
+API doc:
+http://twc.itdida.com/itdida-api/swagger-ui.html#/%E8%BF%90%E5%8D%95API/%E5%8A%9F%E8%83%BD%E6%A8%A1%E5%9D%97/loginUsingPOST_7
+2. create label
+API doc:
+http://twc.itdida.com/itdida-api/swagger-ui.html#/%E8%BF%90%E5%8D%95API/%E5%8A%9F%E8%83%BD%E6%A8%A1%E5%9D%97/importYundanUsingPOST
+
+users can customize config including:
+1. username and pw
+2. requests for label creating
+here is the default sample request(user can modify this template by themselves):
+[
+  {
+    "baoGuanFangShi": 0,
+    "baoGuanFangShiText": 0,
+    "baoGuoLeiXing": 1,
+    "cardType": 0,
+    "claimState": 0,
+    "daiShouHuoKuan": 0,
+    "danJianList": [
+      {
+        "chang": 3,
+        "gao": 3,
+        "innerQty": 0,
+        "kuan": 3,
+        "origBoardNum": 0,
+        "origChargeWeight": 0,
+        "origSquareWeight": 0.0,
+        "origVolumeWeight": 0.0,
+        "origWeight": 0.0,
+        "palletCount": 0.0,
+        "shiZhong": 10.0,
+        "stackable": false
+      }
+    ],
+    "extraFreight": 0,
+    "fileModelList": [
+      {
+        "data": "",
+        "fileName": "",
+        "remark": "",
+        "type": 0
+      }
+    ],
+    "freightPaymentWay": 0,
+    "fuShuiJin": 0,
+    "group": false,
+    "guoJia": "US",
+    "insurance": 0,
+    "insuranceCharges": 0,
+    "jiJianGongSiMingCheng": "FBD Logistics",
+    "jiJianRenChengShi": "Walnut",
+    "jiJianRenDiZhi1": "21558 Ferrero Pkwy",
+    "jiJianRenDiZhi2": "",
+    "jiJianRenDiZhi3": "",
+    "jiJianRenDianHua": "0000000000",
+    "jiJianRenGuoJia": "US",
+    "jiJianRenMingCheng": "ECO",
+    "jiJianRenShouJi": "0000000000",
+    "jiJianRenState": "CA",
+    "jiJianRenYouBian": "91789",
+    "jiJianRenYouXiang": "",
+    "jianShu": 1,
+    "kapaiWaybill": true,
+    "keHuDanHao": "M275389579672352",
+    "kongYunDanHao": "",
+    "kuaiDiGongSi": "",
+    "maiJiaId": "",
+    "needDispatch": true,
+    "needValidateAddress": true,
+    "originPort": "",
+    "otherCharges": 0,
+    "packageDeclCurrency": "USD",
+    "packageDeclPrice": 0,
+    "paperless": 0,
+    "parcelTypeCode": "02",
+    "peiHuoXinXi": "",
+    "qiTaDanHao1": "",
+    "qiTaDanHao2": "",
+    "receiveRemarks": "",
+    "receiveSquares": 0,
+    "receiverAddress": "21558 Ferrero Pkwy",
+    "receiverPerson": "",
+    "receiverPersonTel": "",
+    "recipientAddressType": "4",
+    "recipientArea": "CA",
+    "recipientDockCloseHours": "",
+    "recipientDockOpenHours": "",
+    "recipientDoorplate": "",
+    "recipientEmail": "",
+    "recipientResidential": 0,
+    "requiredChangeNo": true,
+    "requiredTrackNo": true,
+    "requiredZhuanDanFaPiao": false,
+    "senderResidential": 0,
+    "shenBaoXinXiList": [
+      {
+        "goodsDeclUnitPrice": 0,
+        "orderedRequest": {
+          "toSendList": [
+            {
+              "businessType": 10,
+              "quantity": 1
+            }
+          ]
+        },
+        "salePrice": 0,
+        "shenBaoDanJia": 0,
+        "shenBaoHaiGuanBianMa": "",
+        "shenBaoInHaiGuanBianMa": "",
+        "shenBaoInsurance": 0,
+        "shenBaoJinE": 10,
+        "shenBaoPinMing": "TE001",
+        "shenBaoShuLiang": 1,
+        "sku": "TE001",
+        "unit": "PCS",
+        "unitGrossWeight": 0,
+        "unitNetWeight": 0,
+        "yongTuCn": "",
+        "yongTuEn": "",
+        "zhongWenPinMing": "TE001"
+      }
+    ],
+    "shouHuoCaiJi": 0.0,
+    "shouHuoQuDao": "UPS Ground CA CITY IND",
+    "shouHuoShiZhong": 10,
+    "shouJianRenChengShi": "Walnut",
+    "shouJianRenDiZhi1": "21558 Ferrero Pkwy",
+    "shouJianRenDiZhi2": "",
+    "shouJianRenDiZhi3": "",
+    "shouJianRenDianHua": 0,
+    "shouJianRenShouJi": 0,
+    "shouJianRenXingMing": "ABC.J",
+    "shouJianRenYouBian": "91789",
+    "synPushBill": false,
+    "transportType": 0,
+    "wuLiuFangShi": 0,
+    "zhouMing": "CA",
+    "zhuanDanHao": ""
+  }
+]

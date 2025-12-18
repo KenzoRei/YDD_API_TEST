@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "addressVerifyResult": "",
+      "childNos": [],
+      "code": 400,
+      "faPiao": "",
+      "format": "pdf",
+      "huanDanHao": "",
+      "keHuDanHao": "M275874353648928",
+      "label": "",
+      "labelUrl": "",
+      "message": "无法使用该客户单号：该单号已存在并归属于其他客户。",
+      "otherNumber1": "",
+      "otherNumber2": "",
+      "seventeenNo": "",
+      "waybillId": "",
+      "xiTongDanHao": "",
+      "zhuanDanHao": ""
+    }
+  ],
+  "domain": "",
+  "statusCode": 200,
+  "success": true
+}

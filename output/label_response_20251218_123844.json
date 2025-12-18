@@ -1,0 +1,28 @@
+{
+  "data": [
+    {
+      "addressVerifyResult": "BUSINESS",
+      "childNos": [
+        "887233409591",
+        "887233409606"
+      ],
+      "code": 303,
+      "faPiao": "",
+      "format": "pdf",
+      "huanDanHao": "",
+      "keHuDanHao": "NEW_API_TEST_003",
+      "label": "",
+      "labelUrl": "",
+      "message": "Label权限不足",
+      "otherNumber1": "",
+      "otherNumber2": "",
+      "seventeenNo": "",
+      "waybillId": "A2001708716352204800",
+      "xiTongDanHao": "2001708716352204801",
+      "zhuanDanHao": "887233409591"
+    }
+  ],
+  "domain": "",
+  "statusCode": 200,
+  "success": true
+}

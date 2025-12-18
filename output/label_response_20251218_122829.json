@@ -3,22 +3,22 @@
     {
       "addressVerifyResult": "BUSINESS",
       "childNos": [
-        "887022922935"
+        "887232947350"
       ],
       "code": 303,
       "faPiao": "",
       "format": "pdf",
       "huanDanHao": "",
-      "keHuDanHao": "FedEx_Surcharge_Test_014",
+      "keHuDanHao": "NEW_API_TEST_002",
       "label": "",
       "labelUrl": "",
       "message": "Label权限不足",
       "otherNumber1": "",
       "otherNumber2": "",
       "seventeenNo": "",
-      "waybillId": "A1999552865371910144",
-      "xiTongDanHao": "1999552865371910145",
-      "zhuanDanHao": "887022922935"
+      "waybillId": "A2001706130194698240",
+      "xiTongDanHao": "2001706130194698241",
+      "zhuanDanHao": "887232947350"
     }
   ],
   "domain": "",

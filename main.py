@@ -6,6 +6,7 @@ import json
 import argparse
 import logging
 import sys
+from datetime import datetime
 
 
 def setup_logging(config):
@@ -95,10 +96,12 @@ def create_labels_module():
         print("=" * 60)
         print(json.dumps(result, indent=2, ensure_ascii=False))
         
-        # Save response to file
-        with open("label_response.json", "w", encoding="utf-8") as f:
+        # Save response to file with timestamp
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"label_response_{timestamp}.json"
+        with open(filename, "w", encoding="utf-8") as f:
             json.dump(result, f, indent=2, ensure_ascii=False)
-        logger.info("Response saved to label_response.json")
+        logger.info(f"Response saved to {filename}")
         return True
     else:
         logger.error("Failed to create labels")
@@ -170,10 +173,12 @@ def query_price_module():
         print("=" * 60)
         print(json.dumps(result, indent=2, ensure_ascii=False))
         
-        # Save response to file
-        with open("price_response.json", "w", encoding="utf-8") as f:
+        # Save response to file with timestamp
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"price_response_{timestamp}.json"
+        with open(filename, "w", encoding="utf-8") as f:
             json.dump(result, f, indent=2, ensure_ascii=False)
-        logger.info("Response saved to price_response.json")
+        logger.info(f"Response saved to {filename}")
         return True
     else:
         logger.error("Failed to query rates")
@@ -236,10 +241,12 @@ def query_shipment_module():
         print("=" * 60)
         print(json.dumps(result, indent=2, ensure_ascii=False))
         
-        # Save response to file
-        with open("shipment_response.json", "w", encoding="utf-8") as f:
+        # Save response to file with timestamp
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"shipment_response_{timestamp}.json"
+        with open(filename, "w", encoding="utf-8") as f:
             json.dump(result, f, indent=2, ensure_ascii=False)
-        logger.info("Response saved to shipment_response.json")
+        logger.info(f"Response saved to {filename}")
         return True
     else:
         logger.error("Failed to query shipment information")

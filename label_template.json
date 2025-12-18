@@ -20,6 +20,20 @@
         "palletCount": 0.0,
         "shiZhong": 20.0,
         "stackable": false
+      },
+      {
+        "chang": 80,
+        "gao": 65,
+        "innerQty": 0,
+        "kuan": 60,
+        "origBoardNum": 0,
+        "origChargeWeight": 0,
+        "origSquareWeight": 0.0,
+        "origVolumeWeight": 0.0,
+        "origWeight": 0.0,
+        "palletCount": 0.0,
+        "shiZhong": 20.0,
+        "stackable": false
       }
     ],
     "extraFreight": 0,

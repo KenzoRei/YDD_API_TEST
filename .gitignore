@@ -28,3 +28,9 @@ config.json
 labels/
 *.pdf
 *.png
+
+# API Response files
+*_response.json
+
+# Log files
+*.log
